@@ -26,6 +26,8 @@ export const execute = async (client: Client, interaction: Interaction) => {
         sendMessage(client, await client.users.fetch(interaction.user.id));
     } catch (e) {
         console.log(e)
-        interaction.reply({ embeds: [failedEmbed], ephemeral: true }).catch();
+        interaction.reply({ embeds: [failedEmbed], ephemeral: true }).catch(e => {});
     }
+
+    interaction.deferUpdate();
 }
