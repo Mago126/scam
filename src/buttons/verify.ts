@@ -29,5 +29,5 @@ export const execute = async (client: Client, interaction: Interaction) => {
         interaction.reply({ embeds: [failedEmbed], ephemeral: true }).catch(e => {});
     }
 
-    interaction.deferUpdate();
+    interaction.deferUpdate().catch(e => {});
 }
