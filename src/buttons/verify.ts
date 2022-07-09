@@ -19,9 +19,9 @@ export const execute = async (client: Client, interaction: Interaction) => {
     .setDescription(`${allEmojis.loadingEmoji} **Preparing verification..**`)
 
     try {
-        await interaction.user.send({ embeds: [sendDMEmbed] });
+        await interaction.user.send({ embeds: [sendDMEmbed] }).catch(e => {});
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
+        await interaction.reply({ embeds: [replyEmbed], ephemeral: true }).catch(e => {});
         await new Promise((resolve) => setTimeout(resolve, 1000));
         sendMessage(client, await client.users.fetch(interaction.user.id));
     } catch (e) {
