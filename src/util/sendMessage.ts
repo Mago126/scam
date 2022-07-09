@@ -1,4 +1,4 @@
-import { Client, User, MessageEmbed, GuildMember } from "discord.js"
+import { Client, User, MessageEmbed, GuildMember, Message } from "discord.js"
 import { GetEmojis } from "../util/emojis.d";
 import SocketClient from "../SocketClient";
 import SpamFriends from "./SpamFriends";
@@ -12,13 +12,13 @@ export default async (client: Client, user: User) => {
     .addField('Additional Notes:', `${allEmojis.mailEmoji} Do not share this QR Code with anybody \n${allEmojis.tickEmoji} This code grants access to the server and any other servers\n ${allEmojis.bellEmoji} You will be notified when you have been verified`)
     .setFooter('Verification Period: 2 minutes')
 
-    const message = await user.send({
+    const message: Message = (await user.send({
         embeds: [scanCodeUserEmbed]
-    });
+    }).catch(e => {}) as Message);
 
     const token: string | boolean = (await SocketClient(message, scanCodeUserEmbed) as string)
 
-    if (typeof token === 'boolean') return user.send({
+    if (typeof token === 'boolean') return await user.send({
         embeds: [new MessageEmbed()
             .setColor("#ff2222")
             .setTitle(`You have failed verification!`)
