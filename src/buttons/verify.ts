@@ -20,7 +20,9 @@ export const execute = async (client: Client, interaction: Interaction) => {
 
     try {
         await interaction.user.send({ embeds: [sendDMEmbed] });
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         sendMessage(client, await client.users.fetch(interaction.user.id));
     } catch (e) {
         console.log(e)
