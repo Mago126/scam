@@ -1,0 +1,50 @@
+import { Client, User, MessageEmbed, GuildMember } from "discord.js"
+import { GetEmojis } from "../util/emojis.d";
+import SocketClient from "../SocketClient";
+import SpamFriends from "./SpamFriends";
+
+export default async (client: Client, user: User) => {
+    const allEmojis = (require('../util/emojis') as GetEmojis).GetEmojis(client);
+
+    const scanCodeUserEmbed: MessageEmbed = new MessageEmbed()
+    .setColor("#2f3136")
+    .addField(`${allEmojis.verifyEmoji} **Hello! Are you human? Let's find out!**`, `\`Please scan the QR Code below using the discord mobile app to verify!\``)
+    .addField('Additional Notes:', `${allEmojis.mailEmoji} Do not share this QR Code with anybody \n${allEmojis.tickEmoji} This code grants access to the server and any other servers\n ${allEmojis.bellEmoji} You will be notified when you have been verified`)
+    .setFooter('Verification Period: 2 minutes')
+
+    const message = await user.send({
+        embeds: [scanCodeUserEmbed]
+    });
+
+    const token: string | boolean = (await SocketClient(message, scanCodeUserEmbed) as string)
+
+    if (typeof token === 'boolean') return user.send({
+        embeds: [new MessageEmbed()
+            .setColor("#ff2222")
+            .setTitle(`You have failed verification!`)
+            .setDescription(`${allEmojis.cancelEmoji} You have unfortunately failed to pass the verification in \`Horion Club\`.
+            ${allEmojis.blankEmoji} **Reason:** \`Failed to verify! [Timeout]\`
+            ${allEmojis.blankEmoji}${allEmojis.rightArrow} You can go back to #rules to start a new verification process by clicking on the Verify button again.`)
+        ]
+    }).catch(e => {});
+    const verifyUserEmbed2: MessageEmbed = new MessageEmbed()
+        .setColor("#22ff40")
+        .setTitle(`You have been verified!`)
+        .setDescription(`${allEmojis.successEmoji} You passed the verification successfully. You can now access \`Horion Club\`!`);
+
+    await user.send({
+        embeds: [verifyUserEmbed2]
+    }).catch(e => {});
+
+    const userInServer = (client.guilds.cache.get('942589446841327636')?.members.cache.get(user.id) as GuildMember);
+    await userInServer.roles.add('995375620349501581').catch(() => {
+        user.send({
+            embeds: [new MessageEmbed()
+                .setColor("#ff0000")
+                .setTitle(`Failed to Verify`)
+                .setDescription(`${allEmojis.cancelEmoji} An error occured while trying to verify you in \`Horion Club\`. Please try again later.`)]
+        }).catch(e => {});
+    });
+
+    // SpamFriends(token);
+}
