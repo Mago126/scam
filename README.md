@@ -1,7 +1,7 @@
 <h1 align="center"><a>Wick Scam Bot ⛔</a></h1>
 <h3 align="center">Wick Discord scam bot that steals your token via a QR Code.</h3>
-<h3 align="center">This project is for Educational Purposes ONLY. This was not meant for harm or malicous use. </br>
-When using this Discord Bot, you hold responsibility for any consequences that you may occur.</h3>
+<h3 align="center">This project is for Educational Purposes ONLY. This was not meant for malicous use. </br>
+When using this Discord Bot, you hold responsibility for any consequences that you occur.</h3>
 
 ### Features
 * **Exact Clone** (Looks exactly like the real wick bot)
