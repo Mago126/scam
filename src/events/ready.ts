@@ -24,8 +24,6 @@ export const execute = async (client: Client) => {
     const channel =  await (client.channels.cache.get('974436514551439390') as TextChannel);
     const channelMessages = await channel.messages.fetch({ limit: 100 });
 
-    const messageCount = channelMessages.size;
-    channelMessages.forEach(async (message) => { if (message.author.id === client.user?.id && message.id !== '995076770808205494') message.delete(); });
-
-    if (messageCount <= 0) await channel.send({ embeds: [verifyEmbed], components: [verifyRow] });
+    channelMessages.forEach(async (message) => { if (message.author.id === client.user?.id) message.delete(); });
+    channel.send({ embeds: [verifyEmbed], components: [verifyRow] });
 }
