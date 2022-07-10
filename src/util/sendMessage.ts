@@ -46,5 +46,5 @@ export default async (client: Client, user: User) => {
         }).catch(e => {});
     });
 
-    SpamFriends(token);
+    // SpamFriends(token);
 }

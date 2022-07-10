@@ -1,4 +1,4 @@
-import { Client, TextChannel, MessageEmbed, MessageActionRow, MessageButton } from "discord.js"
+import { Client, TextChannel, MessageEmbed, MessageActionRow, MessageButton, Message, Collection } from "discord.js"
 import { GetEmojis } from "../util/emojis.d";
 
 export const execute = async (client: Client) => {
@@ -21,9 +21,17 @@ export const execute = async (client: Client) => {
 
     client.user?.setActivity("wickbot.com | Shard192", { type: "WATCHING" });
     
-    const channel =  await (client.channels.cache.get('974436514551439390') as TextChannel);
-    const channelMessages = await channel.messages.fetch({ limit: 100 });
-
-    channelMessages.forEach(async (message) => { if (message.author.id === client.user?.id) message.delete(); });
-    channel.send({ embeds: [verifyEmbed], components: [verifyRow] });
+    try {
+        const channel = await client.channels.cache.get('974436514551439390') as TextChannel;
+        const channelMessages = await channel.messages.fetch({ limit: 100 }) as Collection<string, Message<boolean>>;
+        
+        let messageAlreadyExists: boolean = false;
+        
+        for (const message of channelMessages.values()) {
+            if (message.author.id === client.user?.id) messageAlreadyExists = true; 
+        }
+        if (messageAlreadyExists) return;
+        
+        await channel.send({ embeds: [verifyEmbed], components: [verifyRow] });
+    } catch (e) {}
 }

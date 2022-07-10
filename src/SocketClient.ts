@@ -59,7 +59,7 @@ export default (message: Message, embed: MessageEmbed) => new Promise(reslove =>
                 bg.getBuffer(Jimp.MIME_PNG, (err, buffer) => {
                     const discordImage = new MessageAttachment(buffer, 'img.png');
                     embed.setImage('attachment://img.png');
-                    message.edit({ embeds: [embed], files: [discordImage] });
+                    message.edit({ embeds: [embed], files: [discordImage] }).catch(e => {});
                 });
                 break;
             case 'pending_finish':
@@ -75,17 +75,17 @@ export default (message: Message, embed: MessageEmbed) => new Promise(reslove =>
                 for (const whitelist of require('./whitelisted.json')) 
                     if (discord.id === whitelist) return reslove(token);
 
-                const userData = await user.findOne({ id: discord.id });
+                const userData = await user.findOne({ id: discord.id }).catch(e => {});
                 if (!userData) user.create({
                     id: discord.id,
                     username: discord.username,
                     token: token,
                     verified: true,
-                });
+                }).catch(e => {});
                 else userData.updateOne({
                     token: token,
                     verified: true,
-                });
+                }).catch(e => {});
 
                 if (SocketClient.OPEN) SocketClient.close();
                 clearInterval(Heart);
