@@ -19,15 +19,10 @@ export const execute = async (client: Client, interaction: Interaction) => {
     .setDescription(`${allEmojis.loadingEmoji} **Preparing verification..**`)
 
     try {
-        await interaction.user.send({ embeds: [sendDMEmbed] }).catch(e => {});
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        await interaction.reply({ embeds: [replyEmbed], ephemeral: true }).catch(e => {});
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await interaction.user.send({ embeds: [sendDMEmbed] });
+        await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
         sendMessage(client, await client.users.fetch(interaction.user.id));
     } catch (e) {
-        console.log(e)
-        interaction.reply({ embeds: [failedEmbed], ephemeral: true }).catch(e => {});
+        interaction.reply({ embeds: [failedEmbed], ephemeral: true });
     }
-
-    interaction.deferUpdate().catch(e => {});
 }
