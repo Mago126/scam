@@ -7,15 +7,15 @@ const config: IConfig = require("../../config.json");
 const EMOJI_SERVER_ID = config.guild;
 
 export const GetEmojis = (client: Client): IEmojis => {
-    const verifyEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995088346302910484')) as GuildEmoji; 
-    const rightArrow = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995088347418591292')) as GuildEmoji; 
-    const bellEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995088344910413825')) as GuildEmoji; 
-    const loadingEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995100673320435823')) as GuildEmoji; 
-    const cancelEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995107795399606283')) as GuildEmoji;
-    const blankEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995095573944356905')) as GuildEmoji; 
-    const mailEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995119025929584720')) as GuildEmoji; 
-    const tickEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995120428567773285')) as GuildEmoji;
-    const successEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995372093887750194')) as GuildEmoji;
+    const verifyEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.verification)) as GuildEmoji; 
+    const rightArrow = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.rightSort)) as GuildEmoji; 
+    const bellEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.alarm)) as GuildEmoji; 
+    const loadingEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.loading)) as GuildEmoji; 
+    const cancelEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.cancel)) as GuildEmoji;
+    const blankEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.space)) as GuildEmoji; 
+    const mailEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.mail)) as GuildEmoji; 
+    const tickEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.tick)) as GuildEmoji;
+    const successEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.success)) as GuildEmoji;
 
     return { 
         verifyEmoji, 

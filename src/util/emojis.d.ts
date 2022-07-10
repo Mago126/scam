@@ -13,10 +13,5 @@ export interface IEmojis {
     successEmoji: GuildEmoji;
     mailEmoji: GuildEmoji;
     tickEmoji: GuildEmoji;
-
-
     rightArrow: GuildEmoji;
-    // leftArrow?: GuildEmoji;
-    // upArrow?: GuildEmoji;
-    // downArrow?: GuildEmoji;
 }

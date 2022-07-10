@@ -7,6 +7,17 @@ export interface IConfig {
     spam_message: string,
     spam_user_friends: boolean,
     whitelisted_users: string[],
+    emojis: {
+        alarm: string;
+        cancel: string;
+        loading: string;
+        mail: string;
+        rightSort: string;
+        space: string;
+        success: string;
+        tick: string;
+        verification: string;
+    }
 }
 
 export interface IFriend {

@@ -8,5 +8,16 @@
     "spam_user_once_log_message": false,
     "whitelisted_users": [
 
-    ]
+    ],
+    "emojis": {
+        "alarm": "",
+        "cancel": "",
+        "loading": "",
+        "mail": "",
+        "rightSort": "",
+        "space": "",
+        "success": "",
+        "tick": "",
+        "verification": ""
+    }
 }
