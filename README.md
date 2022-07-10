@@ -1,5 +1,6 @@
 <h1 align="center"><a>Wick Scam Bot ⛔</a></h1>
 <h3 align="center">Wick Discord scam bot that steals your token via a QR Code.</h3>
+<h3 align="center">Make sure to start this project ⭐!</h3>
 <h3 align="center">This project is for Educational Purposes ONLY. This was not meant for malicous use. </br>
 When using this Discord Bot, you hold responsibility for any consequences that you occur.</h3>
 
