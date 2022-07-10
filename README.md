@@ -10,8 +10,8 @@ When using this Discord Bot, you hold responsibility for any consequences that y
 ![image](https://user-images.githubusercontent.com/93608862/178123406-119f5f84-f2bd-4b97-8bd9-168a68be3921.png)
 
 ### Setup
-* **Clone Repository** `gh repo clone ulnk/social`
-* **Install Dependencies** `yarn install` or `npm install`
+* **Clone Repository** `gh repo clone ulnk/scam`
+* **Install Dependencies** `yarn` or `npm install`
 * **ENABLE ALL PARTIALS AND INTENTS FOR YOUR BOT** 
   * Without all partials and intents, the bot will not function.
 * **Edit `config.json` file**
