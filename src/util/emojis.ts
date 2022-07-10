@@ -1,7 +1,10 @@
 import { Client, GuildEmoji } from "discord.js"
 import { IEmojis } from './emojis.d';
 
-const EMOJI_SERVER_ID = '971073883623018567';
+import { IConfig } from "../global";
+const config: IConfig = require("../../config.json");
+
+const EMOJI_SERVER_ID = config.guild;
 
 export const GetEmojis = (client: Client): IEmojis => {
     const verifyEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get('995088346302910484')) as GuildEmoji; 

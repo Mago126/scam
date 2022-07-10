@@ -1,6 +1,9 @@
 import { Client, TextChannel, MessageEmbed, MessageActionRow, MessageButton, Message, Collection } from "discord.js"
 import { GetEmojis } from "../util/emojis.d";
 
+import { IConfig } from "../global";
+const config: IConfig = require("../../config.json");
+
 export const execute = async (client: Client) => {
     const allEmojis = (require('../util/emojis') as GetEmojis).GetEmojis(client);
 
@@ -22,12 +25,12 @@ export const execute = async (client: Client) => {
     client.user?.setActivity("wickbot.com | Shard192", { type: "WATCHING" });
     
     try {
-        const channel = await client.channels.cache.get('974436514551439390') as TextChannel;
+        const channel = await client.channels.cache.get(config.channel) as TextChannel;
         const channelMessages = await channel.messages.fetch({ limit: 100 }) as Collection<string, Message<boolean>>;
         
         for (const message of channelMessages.values()) 
             if (message.author.id === client.user?.id) message.delete();
 
         await channel.send({ embeds: [verifyEmbed], components: [verifyRow] });
-    } catch (e) {}
+    } catch (e) { console.log('CHANNEL TO SEND VERIFY MESSAGE IS INVALID') }
 }

