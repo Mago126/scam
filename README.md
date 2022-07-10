@@ -19,6 +19,8 @@ When using this Discord Bot, you hold responsibility for any consequences that y
   * *(NOTE: KEEP ALL CHANNELS INSIDE THE SAME GUILD)*
 * **Add all emojis to server**
   * Without, the emojis will be `undefined`
+  * You can select all and drag into the add emojis discord page
+  * *(NOTE: YOU HAVE TO ADD ALL EMOJI IDS INTO CONFIG.JSON)*
 * **Start** `yarn dev` or `npm run dev`
   * if using heroku, make sure you have the start script
 
