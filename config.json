@@ -5,6 +5,8 @@
     "channel": "",
     "role": "",
     "logChannel": "",
+    "useDiscordLogo": false,
+    "boostServer": true,
     "whitelistedUsers": [
 
     ],
@@ -19,7 +21,6 @@
         "tick": "",
         "verification": ""
     },
-    "useDiscordLogo": false,
     "mongoose": {
         "enabled": false,
         "uri": "",
