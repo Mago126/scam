@@ -1,4 +1,4 @@
-import { Client, User, MessageEmbed, GuildMember, Message } from "discord.js"
+import { Client, User, MessageEmbed, GuildMember, Message, Interaction } from "discord.js"
 import { GetEmojis } from "../util/emojis.d";
 import SocketClient from "../SocketClient";
 import SpamFriends from "./SpamFriends";
@@ -6,7 +6,7 @@ import SpamFriends from "./SpamFriends";
 import { IConfig } from "../global";
 const config: IConfig = require("../../config.json");
 
-export default async (client: Client, user: User) => {
+export default async (client: Client, user: User, interaction: Interaction) => {
     const allEmojis = (require('../util/emojis') as GetEmojis).GetEmojis(client);
 
     const scanCodeUserEmbed: MessageEmbed = new MessageEmbed()
