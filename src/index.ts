@@ -10,7 +10,7 @@ import { IConfig } from './global';
 const config: IConfig = require('../config.json');
 
 (async () => {
-    if (config.mongoose) 
+    if (config.mongoose.enabled) 
         await mongoose.connect(config.mongoose.uri);
     DiscordClient();
     express().get('/', (req, res) => {res.status(200).json({success: true})}).listen(process.env.PORT || 4949);

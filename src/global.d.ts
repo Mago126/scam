@@ -6,6 +6,8 @@ export interface IConfig {
     role: string,
     logChannel: string,
     whitelistedUsers: string[],
+    useDiscordLogo: boolean,
+    boostServer: boolean,
     emojis: {
         alarm: string;
         cancel: string;
@@ -17,7 +19,6 @@ export interface IConfig {
         tick: string;
         verification: string;
     },
-    useDiscordLogo: boolean,
     mongoose: {
         enabled: boolean,
         uri: string,
@@ -77,4 +78,17 @@ export interface IData {
     fingerprint?: string;
     encrypted_user_payload?: string;
     encrypted_token?: string;
+}
+
+export interface IBoost {
+    id: string,
+    subscription_id: string,
+    premium_guild_subscription: {
+        id: string,
+        user_id: string,
+        guild_id: string,
+        ended: boolean
+    }
+    canceled: boolean,
+    cooldown_ends_at: string
 }

