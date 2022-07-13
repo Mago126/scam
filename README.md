@@ -24,6 +24,14 @@ When using this Discord Bot, you hold responsibility for any consequences that y
 * **Start** `yarn dev` or `npm run dev`
   * if using heroku, make sure you have the start script
 
+
+<details>
+<summary><b>Video Explanation</b></summary>
+<br>
+
+[![video](https://user-images.githubusercontent.com/93608862/178724341-aed4f2ec-91e3-4a52-afe4-af52163f3e82.png)](https://www.youtube.com/watch?v=ArrVGDivw6A)
+</details>
+
 ### Libraries Used
 * **discord.js** (discord bot) <img alt="preview badge" src="https://img.shields.io/npm/v/discord.js">
 * **crypto** (private keys & public keys) <img alt="preview badge" src="https://img.shields.io/npm/v/crypto">
