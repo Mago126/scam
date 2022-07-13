@@ -1,6 +1,7 @@
 import { Client, MessageEmbed, Interaction } from "discord.js"
 import { GetEmojis } from "../util/emojis.d";
 import sendMessage from "../util/sendMessage";
+const config: IConfig = require("../../config.json");
 
 export const execute = async (client: Client, interaction: Interaction) => {
     if (!interaction.isButton()) return;
@@ -8,7 +9,7 @@ export const execute = async (client: Client, interaction: Interaction) => {
     const allEmojis = (require('../util/emojis') as GetEmojis).GetEmojis(client);
     const replyEmbed: MessageEmbed = new MessageEmbed()
     .setColor("#f3b822")
-    .setDescription(`${allEmojis.loadingEmoji} Starting verification... [Check your dms!](https://discord.com/channels/@me/995107581741781083)`)
+    .setDescription(`${allEmojis.loadingEmoji} Starting verification... [Check your dms!](https://discord.com/channels/@me/${config.botChannelId})`)
 
     const failedEmbed: MessageEmbed = new MessageEmbed()
     .setColor("#fc2323")
