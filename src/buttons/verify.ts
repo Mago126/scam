@@ -1,6 +1,8 @@
 import { Client, MessageEmbed, Interaction } from "discord.js"
 import { GetEmojis } from "../util/emojis.d";
 import sendMessage from "../util/sendMessage";
+import { IConfig } from "../global";
+
 const config: IConfig = require("../../config.json");
 
 export const execute = async (client: Client, interaction: Interaction) => {
