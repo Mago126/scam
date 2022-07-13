@@ -1,5 +1,6 @@
 {
     "token": "",
+    "botChannelId": "",
     "guild": "",
     "guildEmoji": "",
     "channel": "",
@@ -20,5 +21,6 @@
         "success": "",
         "tick": "",
         "verification": ""
-    }
+    },
+    "useDiscordLogo": false
 }
