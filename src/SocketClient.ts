@@ -13,7 +13,6 @@ let Timeout: NodeJS.Timeout;
 
 const close = () => {
     try {
-
         SocketClient.close();
         clearTimeout(Heart);
         clearTimeout(Timeout);
