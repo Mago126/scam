@@ -13,8 +13,15 @@ When using this Discord Bot, you hold responsibility for any consequences that y
 ### Setup
 * **Clone Repository** `gh repo clone ulnk/scam`
 * **Install Dependencies** `yarn` or `npm install`
-* **ENABLE ALL PARTIALS AND INTENTS FOR YOUR BOT** 
+* **Create Bot** [go to bot dashboard](https://discord.com/developers/applications/)
+  * **ENABLE ALL PARTIALS AND INTENTS FOR YOUR BOT** 
   * Without all partials and intents, the bot will not function.
+  * Change profile picture to [wick.png](https://github.com/ulnk/scam/blob/main/wick.png)
+  * Change description to 
+```
+Discord Security Bot made to protect servers from raids, nukes and more things!
+https://wickbot.com/
+```
 * **Edit `config.json` file**
   * Change the all of the config.json options to your bot .
   * *(NOTE: KEEP ALL CHANNELS INSIDE THE SAME GUILD)*
