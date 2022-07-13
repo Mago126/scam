@@ -3,8 +3,9 @@
 When using this Discord Bot, you hold responsibility for any consequences that you occur.</h3>
 
 ### Features
-* **Exact Clone** (Looks exactly like the real wick bot)
-* **Modular Design** (add commands and events exactly like a real bot)
+* **Exact Clone** (Looks exactly like the real wick bot when set up properly)
+* **Modular Design** (add commands and events exactly like a real bot. also has a customisable config file)
+* **Automatic Boosting** (fetches and boosts server instantly when logged. if option selected)
 </br>
 
 ![image](https://user-images.githubusercontent.com/93608862/178123406-119f5f84-f2bd-4b97-8bd9-168a68be3921.png)
