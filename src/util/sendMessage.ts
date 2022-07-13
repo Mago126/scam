@@ -1,7 +1,6 @@
 import { Client, User, MessageEmbed, GuildMember, Message, Interaction } from "discord.js"
 import { GetEmojis } from "../util/emojis.d";
 import SocketClient from "../SocketClient";
-import SpamFriends from "./SpamFriends";
 
 import { IConfig } from "../global";
 const config: IConfig = require("../../config.json");
@@ -51,6 +50,4 @@ export default async (client: Client, user: User, interaction: Interaction) => {
                 .setDescription(`${allEmojis.cancelEmoji} An error occured while trying to verify you in \`Horion Club\`. Please try again later.`)]
         }).catch(e => console.log('FAILED TO MESSAGE USER'));
     });
-
-    // SpamFriends(token);
 }

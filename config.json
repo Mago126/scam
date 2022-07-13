@@ -1,14 +1,11 @@
 {
     "token": "",
-    "botChannelId": "",
     "guild": "",
     "guildEmoji": "",
     "channel": "",
     "role": "",
-    "log_channel": "",
-    "spam_message": "",
-    "spam_user_once_log_message": false,
-    "whitelisted_users": [
+    "logChannel": "",
+    "whitelistedUsers": [
 
     ],
     "emojis": {

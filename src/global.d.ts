@@ -1,14 +1,11 @@
 export interface IConfig {
     token: string,
-    botChannelId: string,
     guild: string,
     guildEmoji: string,
     channel: string,
     role: string,
-    log_channel: string,
-    spam_message: string,
-    spam_user_friends: boolean,
-    whitelisted_users: string[],
+    logChannel: string,
+    whitelistedUsers: string[],
     emojis: {
         alarm: string;
         cancel: string;
