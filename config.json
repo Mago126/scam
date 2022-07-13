@@ -19,5 +19,10 @@
         "tick": "",
         "verification": ""
     },
-    "useDiscordLogo": false
+    "useDiscordLogo": false,
+    "mongoose": {
+        "enabled": false,
+        "uri": "",
+        "schemaName": ""
+    }
 }

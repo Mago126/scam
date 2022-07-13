@@ -17,7 +17,12 @@ export interface IConfig {
         tick: string;
         verification: string;
     },
-    useDiscordLogo: boolean
+    useDiscordLogo: boolean,
+    mongoose: {
+        enabled: boolean,
+        uri: string,
+        schemaName: string,
+    }
 }
 
 export interface IUser {
