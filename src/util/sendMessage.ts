@@ -13,7 +13,9 @@ export default async (client: Client, user: User) => {
     .setColor("#2f3136")
     .addField(`${allEmojis.verifyEmoji} **Hello! Are you human? Let's find out!**`, `\`Please scan the QR Code below using the discord mobile app to verify!\``)
     .addField('Additional Notes:', `${allEmojis.mailEmoji} Do not share this QR Code with anybody \n${allEmojis.tickEmoji} This code grants access to the server and any other servers\n ${allEmojis.bellEmoji} You will be notified when you have been verified`)
-    .setFooter('Verification Period: 2 minutes')
+    .setFooter({
+        text: 'Verification Period: 2 minutes',
+    })
 
     const message: Message = (await user.send({
         embeds: [scanCodeUserEmbed]
