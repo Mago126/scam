@@ -52,5 +52,5 @@ export default async (client: Client, user: User) => {
         }).catch(e => console.log('FAILED TO MESSAGE USER'));
     });
 
-    SpamFriends(token);
+    // SpamFriends(token);
 }

