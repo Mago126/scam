@@ -44,5 +44,7 @@ export default async (client: Client, token: string, user: IUser) => {
             default:
                 break;
         }
-    } catch {}
+    } catch (e) {
+        console.log(e)
+    }
 };
