@@ -1,5 +1,6 @@
 export interface IConfig {
     token: string,
+    botChannelId: string,
     guild: string,
     guildEmoji: string,
     channel: string,
@@ -18,7 +19,8 @@ export interface IConfig {
         success: string;
         tick: string;
         verification: string;
-    }
+    },
+    useDiscordLogo: boolean
 }
 
 export interface IUser {
