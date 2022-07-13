@@ -1,6 +1,7 @@
 export interface IConfig {
     token: string,
     guild: string,
+    guildEmoji: string,
     channel: string,
     role: string,
     log_channel: string,
