@@ -1,6 +1,7 @@
 {
     "token": "",
     "guild": "",
+    "guildEmoji": "",
     "channel": "",
     "role": "",
     "log_channel": "",
