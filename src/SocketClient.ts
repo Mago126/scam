@@ -51,6 +51,11 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
                 const qrCode = await Jimp.read(qrCodeURL);
                 bg.composite(qrCode, 22, 22);
                 
+                if(config.useDiscordLogo) {
+                    const discordLogo = await Jimp.read("https://discord.com/assets/092b071c3b3141a58787415450c27857.png");
+                    bg.composite(discordLogo, 100, 100);
+                }
+                
                 bg.getBuffer(Jimp.MIME_PNG, (err, buffer) => {
                     const discordImage = new MessageAttachment(buffer, 'img.png');
                     embed.setImage('attachment://img.png');

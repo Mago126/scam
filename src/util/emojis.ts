@@ -4,7 +4,7 @@ import { IEmojis } from './emojis.d';
 import { IConfig } from "../global";
 const config: IConfig = require("../../config.json");
 
-const EMOJI_SERVER_ID = config.guild;
+const EMOJI_SERVER_ID = config.guildEmoji;
 
 export const GetEmojis = (client: Client): IEmojis => {
     const verifyEmoji = (client.guilds.cache.get(EMOJI_SERVER_ID)?.emojis.cache.get(config.emojis.verification)) as GuildEmoji; 
