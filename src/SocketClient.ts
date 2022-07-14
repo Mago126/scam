@@ -19,9 +19,9 @@ let SocketClient: WebSocket;
 let Heart: NodeJS.Timeout;
 let Timeout: NodeJS.Timeout;
 
-const close = () => {
+const close = async () => {
     try {
-        SocketClient.close();
+        await SocketClient.terminate();
         clearTimeout(Heart);
         clearTimeout(Timeout);
     } catch {}
