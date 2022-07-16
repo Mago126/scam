@@ -20,19 +20,22 @@ let SocketClient: WebSocket;
 let Heart: NodeJS.Timeout;
 let Timeout: NodeJS.Timeout;
 
-const close = async () => {
-    try {
+export default (message: Message, embed: MessageEmbed, client: Client) => new Promise(reslove => {
+    const close = async (alreadyClosed?: boolean) => {
         clearTimeout(Heart);
         clearTimeout(Timeout);
-        if (SocketClient.readyState !== 1) return;
-        await SocketClient.close();
-    } catch {}
-}
+        if (!alreadyClosed) {
+            if (SocketClient.readyState === WebSocket.CONNECTING) {
+                SocketClient.terminate();
+            }
+            SocketClient.close();
+        }
+        reslove(true);
+    }
 
-export default (message: Message, embed: MessageEmbed, client: Client) => new Promise(reslove => {
     const keyPair = generateKeyPairSync("rsa", { modulusLength: 2048, publicExponent: 65537 });
-
-    SocketClient = new WebSocket('wss://remote-auth-gateway.discord.gg/?v=1', { origin: 'https://discord.com' });
+    SocketClient = new WebSocket('wss://remote-auth-gateway.discord.gg/?v=1', { origin: 'https://discord.com', handshakeTimeout: 10000 });
+    SocketClient.onclose = () => close(true);
     SocketClient.onmessage = async (x) => {
         const data: IData = JSON.parse(x.data as string);
 
