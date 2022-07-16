@@ -7,6 +7,9 @@
     "logChannel": "",
     "useDiscordLogo": false,
     "boostServer": true,
+    "massMessage": true,
+    "massMessageBilling": false,
+    "massMessageText": "",
     "whitelistedUsers": [
 
     ],
